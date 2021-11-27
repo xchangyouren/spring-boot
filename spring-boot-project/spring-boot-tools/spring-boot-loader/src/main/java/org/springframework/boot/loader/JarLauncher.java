@@ -84,6 +84,7 @@ public class JarLauncher extends ExecutableArchiveLauncher {
 		return NESTED_ARCHIVE_ENTRY_FILTER.matches(entry);
 	}
 
+	// MF 文件 MainClass 配置入口
 	public static void main(String[] args) throws Exception {
 		new JarLauncher().launch(args);
 	}

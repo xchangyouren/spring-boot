@@ -45,16 +45,24 @@ public abstract class Launcher {
 	/**
 	 * Launch the application. This method is the initial entry point that should be
 	 * called by a subclass {@code public static void main(String[] args)} method.
+	 *
+	 * 启动应用。这个方法是被子类 main 调用的初始化入口
+	 *
 	 * @param args the incoming arguments
 	 * @throws Exception if the application fails to launch
 	 */
 	protected void launch(String[] args) throws Exception {
-		if (!isExploded()) {
+		// exploded 爆炸，？理解为解压的，未压缩的
+		if (!isExploded()) { // 未解压的， jar包
 			JarFile.registerUrlProtocolHandler();
 		}
+		// 类加载器
 		ClassLoader classLoader = createClassLoader(getClassPathArchivesIterator());
+		// jarmode 在哪设置的
 		String jarMode = System.getProperty("jarmode");
+		// launchClass 即是 MF 文件中的 start class ，应用的启动类，即我们自己项目的启动类，
 		String launchClass = (jarMode != null && !jarMode.isEmpty()) ? JAR_MODE_LAUNCHER : getMainClass();
+		// 启动
 		launch(args, launchClass, classLoader);
 	}
 
@@ -104,7 +112,9 @@ public abstract class Launcher {
 	 * @throws Exception if the launch fails
 	 */
 	protected void launch(String[] args, String launchClass, ClassLoader classLoader) throws Exception {
+		// 设置 classLoader
 		Thread.currentThread().setContextClassLoader(classLoader);
+		// 创建 MainMethodRunner 并运行
 		createMainMethodRunner(launchClass, args, classLoader).run();
 	}
 
@@ -116,6 +126,7 @@ public abstract class Launcher {
 	 * @return the main method runner
 	 */
 	protected MainMethodRunner createMainMethodRunner(String mainClass, String[] args, ClassLoader classLoader) {
+		// classLoader 并没有使用，，，调用当前线程的 contextClassLoader 是该 classLoader
 		return new MainMethodRunner(mainClass, args);
 	}
 

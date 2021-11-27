@@ -43,7 +43,9 @@ public class MainMethodRunner {
 	}
 
 	public void run() throws Exception {
+		// ClassLoader 对应上了，使用的当前线程的，在Launcher.launch 中设置的
 		Class<?> mainClass = Class.forName(this.mainClassName, false, Thread.currentThread().getContextClassLoader());
+		// 通过反射调用 mainClass 中的 main 方法，
 		Method mainMethod = mainClass.getDeclaredMethod("main", String[].class);
 		mainMethod.setAccessible(true);
 		mainMethod.invoke(null, new Object[] { this.args });
