@@ -42,7 +42,7 @@ import org.gradle.api.file.DirectoryProperty;
 import org.gradle.api.model.ObjectFactory;
 import org.gradle.api.plugins.JavaLibraryPlugin;
 import org.gradle.api.plugins.JavaPlugin;
-import org.gradle.api.plugins.JavaPluginConvention;
+import org.gradle.api.plugins.JavaPluginExtension;
 import org.gradle.api.publish.PublishingExtension;
 import org.gradle.api.publish.maven.MavenPublication;
 import org.gradle.api.publish.maven.plugins.MavenPublishPlugin;
@@ -144,7 +144,7 @@ public class MavenPluginPlugin implements Plugin<Project> {
 	private MavenExec createGenerateHelpMojoTask(Project project, File helpMojoDir) {
 		MavenExec task = project.getTasks().create("generateHelpMojo", MavenExec.class);
 		task.setProjectDir(helpMojoDir);
-		task.args("org.apache.maven.plugins:maven-plugin-plugin:3.6.0:helpmojo");
+		task.args("org.apache.maven.plugins:maven-plugin-plugin:3.6.1:helpmojo");
 		task.getOutputs().dir(new File(helpMojoDir, "target/generated-sources/plugin"));
 		return task;
 	}
@@ -180,7 +180,7 @@ public class MavenPluginPlugin implements Plugin<Project> {
 	}
 
 	private SourceSet getMainSourceSet(Project project) {
-		SourceSetContainer sourceSets = project.getConvention().getPlugin(JavaPluginConvention.class).getSourceSets();
+		SourceSetContainer sourceSets = project.getExtensions().getByType(JavaPluginExtension.class).getSourceSets();
 		return sourceSets.getByName(SourceSet.MAIN_SOURCE_SET_NAME);
 	}
 
@@ -211,7 +211,7 @@ public class MavenPluginPlugin implements Plugin<Project> {
 
 	private MavenExec createGeneratePluginDescriptorTask(Project project, File mavenDir) {
 		MavenExec generatePluginDescriptor = project.getTasks().create("generatePluginDescriptor", MavenExec.class);
-		generatePluginDescriptor.args("org.apache.maven.plugins:maven-plugin-plugin:3.6.0:descriptor");
+		generatePluginDescriptor.args("org.apache.maven.plugins:maven-plugin-plugin:3.6.1:descriptor");
 		generatePluginDescriptor.getOutputs().dir(new File(mavenDir, "target/classes/META-INF/maven"));
 		generatePluginDescriptor.getInputs().dir(new File(mavenDir, "target/classes/org"))
 				.withPathSensitivity(PathSensitivity.RELATIVE).withPropertyName("plugin classes");
