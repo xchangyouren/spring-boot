@@ -69,8 +69,10 @@ public abstract class ExecutableArchiveLauncher extends Launcher {
 
 	@Override
 	protected String getMainClass() throws Exception {
+		// 获得启动的类的全名
 		Manifest manifest = this.archive.getManifest();
 		String mainClass = null;
+		// 从 manifest 中找到启动的类的全名
 		if (manifest != null) {
 			mainClass = manifest.getMainAttributes().getValue(START_CLASS_ATTRIBUTE);
 		}
@@ -84,12 +86,14 @@ public abstract class ExecutableArchiveLauncher extends Launcher {
 	protected ClassLoader createClassLoader(Iterator<Archive> archives) throws Exception {
 		// 猜测一个大小
 		List<URL> urls = new ArrayList<>(guessClassPathSize());
+		// 获得所有 Archive 的 URL 地址
 		while (archives.hasNext()) {
 			urls.add(archives.next().getUrl());
 		}
 		if (this.classPathIndex != null) {
 			urls.addAll(this.classPathIndex.getUrls());
 		}
+		// 创建加载这些 URL 的 ClassLoader
 		return createClassLoader(urls.toArray(new URL[0]));
 	}
 

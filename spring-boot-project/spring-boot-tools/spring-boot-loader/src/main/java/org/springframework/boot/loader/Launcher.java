@@ -107,7 +107,9 @@ public abstract class Launcher {
 	 * @throws Exception if the launch fails
 	 */
 	protected void launch(String[] args, String launchClass, ClassLoader classLoader) throws Exception {
+		// 设置 LaunchedURLClassLoader 作为类加载器
 		Thread.currentThread().setContextClassLoader(classLoader);
+		// 创建 MainMethodRunner 对象，并执行 run 方法，启动 Spring Boot 应用
 		createMainMethodRunner(launchClass, args, classLoader).run();
 	}
 
