@@ -103,9 +103,12 @@ public abstract class ExecutableArchiveLauncher extends Launcher {
 	@Override
 	protected Iterator<Archive> getClassPathArchivesIterator() throws Exception {
 		Archive.EntryFilter searchFilter = this::isSearchCandidate;
+		// 获得所有 Archive
 		Iterator<Archive> archives = this.archive.getNestedArchives(searchFilter,
 				(entry) -> isNestedArchive(entry) && !isEntryIndexed(entry));
+		// 是否需要后续处理，Jar 和War 都不需要，因为之前的都是做后续处理，这里是向后兼容返回的 true
 		if (isPostProcessingClassPathArchives()) {
+			// 后续处理
 			archives = applyClassPathArchivePostProcessing(archives);
 		}
 		return archives;

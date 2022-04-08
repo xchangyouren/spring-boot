@@ -39,9 +39,11 @@ public class JarLauncher extends ExecutableArchiveLauncher {
 	private static final String DEFAULT_CLASSPATH_INDEX_LOCATION = "BOOT-INF/classpath.idx";
 
 	static final EntryFilter NESTED_ARCHIVE_ENTRY_FILTER = (entry) -> {
+		// 如果是目录的情况，只要 BOOT-INF/classes/ 目录
 		if (entry.isDirectory()) {
 			return entry.getName().equals("BOOT-INF/classes/");
 		}
+		// 如果是文件的情况，只要 BOOT-INF/lib/ 目录下的 jar 包
 		return entry.getName().startsWith("BOOT-INF/lib/");
 	};
 
@@ -81,6 +83,7 @@ public class JarLauncher extends ExecutableArchiveLauncher {
 
 	@Override
 	protected boolean isNestedArchive(Archive.Entry entry) {
+		// lambda 匹配
 		return NESTED_ARCHIVE_ENTRY_FILTER.matches(entry);
 	}
 
