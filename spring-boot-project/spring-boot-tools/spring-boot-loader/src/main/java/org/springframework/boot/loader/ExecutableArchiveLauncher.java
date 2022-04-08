@@ -82,6 +82,7 @@ public abstract class ExecutableArchiveLauncher extends Launcher {
 
 	@Override
 	protected ClassLoader createClassLoader(Iterator<Archive> archives) throws Exception {
+		// 猜测一个大小
 		List<URL> urls = new ArrayList<>(guessClassPathSize());
 		while (archives.hasNext()) {
 			urls.add(archives.next().getUrl());
